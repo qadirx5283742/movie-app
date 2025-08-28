@@ -13,8 +13,8 @@ A simple movie discovery web app built with **React** and **Vite**, featuring re
 
 ## 🧰 Tech Stack
 - **Frontend:** React (with Vite)
-- **Styling:** CSS / Tailwind (if applied)
-- **API:** Movie Database API (TMDB or OMDb)
+- **Styling:** Tailwind
+- **API:** Movie Database API TMDB
 
 ## 📦 Getting Started
 
@@ -25,8 +25,8 @@ A simple movie discovery web app built with **React** and **Vite**, featuring re
 ### Installation
 ```bash
 # Clone the repository
-git clone <your-repo-url>.git
-cd <your-repo-name>
+git clone (https://github.com/qadirx5283742/movie-app.git
+cd movie-app
 
 # Install dependencies
 npm install
