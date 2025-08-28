@@ -70,8 +70,7 @@ Add environment variables in Netlify dashboard.
 
 ## 🖼️ Screenshots
 
-Add screenshots or GIFs here to showcase UI.
-
+<img width="1920" height="3655" alt="screencapture-movie-web-react-js-netlify-app-2025-08-29-02_54_24" src="https://github.com/user-attachments/assets/c7e6a871-6e02-4653-8dd6-eac07b7f6f6c" />
 
 ## 🤝 Contributing
 
