@@ -1,12 +1,43 @@
-# React + Vite
+# 🎬 Movie Web (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple movie discovery web app built with **React** and **Vite**, featuring real-time search and trending movie displays.
 
-Currently, two official plugins are available:
+## 🔗 Live Demo
+👉 [Movie Web](https://movie-web-react-js.netlify.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
+- 🔍 **Real-time Search** – Search for movies instantly as you type.  
+- 📊 **Trending & Popular Movies** – See a list of the most popular movies right now.  
+- 🖼️ **Responsive UI** – Works smoothly on mobile, tablet, and desktop.  
+- 🚫 **Note:** Clicking on a movie card does **not** open details yet — movies are currently displayed only.
 
-## Expanding the ESLint configuration
+## 🧰 Tech Stack
+- **Frontend:** React (with Vite)
+- **Styling:** CSS / Tailwind (if applied)
+- **API:** Movie Database API (TMDB or OMDb)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Getting Started
+
+### Prerequisites
+- **Node.js** v18+  
+- **npm** v9+ (or **yarn/pnpm**)
+
+### Installation
+```bash
+# Clone the repository
+git clone <your-repo-url>.git
+cd <your-repo-name>
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss.
+
+📜 License
+
+MIT License
