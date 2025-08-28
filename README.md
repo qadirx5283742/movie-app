@@ -72,15 +72,6 @@ Add environment variables in Netlify dashboard.
 
 Add screenshots or GIFs here to showcase UI.
 
-## 🗺️ Roadmap
-
- Add movie details page
-
- Add watchlist/favorites feature
-
- Dark/Light theme support
-
- Better error handling & loading states
 
 ## 🤝 Contributing
 
