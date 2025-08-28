@@ -25,7 +25,7 @@ A simple movie discovery web app built with **React** and **Vite**, featuring re
 ### Installation
 ```bash
 # Clone the repository
-git clone (https://github.com/qadirx5283742/movie-app.git
+git clone https://github.com/qadirx5283742/movie-app.git
 cd movie-app
 
 # Install dependencies
@@ -35,6 +35,53 @@ npm install
 npm run dev
 
 ```
+
+##Build for Production
+```bash
+npm run build
+npm run preview
+```
+
+##⚙️ Environment Variables
+Create a .env file in the project root with your API details:
+```bash
+VITE_API_BASE_URL=https://api.themoviedb.org/3
+VITE_API_KEY=your_api_key_here
+```
+
+##🗂️ Project Structure
+```bash
+src/
+ ├── public/          # images, icons
+ ├── components/      # reusable components
+ ├── App.jsx
+ └── main.jsx
+```
+
+🚀 Deployment
+
+This app is deployed on Netlify:
+
+Build command: npm run build
+
+Publish directory: dist
+
+Add environment variables in Netlify dashboard.
+
+🖼️ Screenshots
+
+Add screenshots or GIFs here to showcase UI.
+
+🗺️ Roadmap
+
+ Add movie details page
+
+ Add watchlist/favorites feature
+
+ Dark/Light theme support
+
+ Better error handling & loading states
+
 🤝 Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss.
