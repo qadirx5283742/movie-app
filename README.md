@@ -36,20 +36,20 @@ npm run dev
 
 ```
 
-##Build for Production
+## Build for Production
 ```bash
 npm run build
 npm run preview
 ```
 
-##⚙️ Environment Variables
+## ⚙️ Environment Variables
 Create a .env file in the project root with your API details:
 ```bash
 VITE_API_BASE_URL=https://api.themoviedb.org/3
 VITE_API_KEY=your_api_key_here
 ```
 
-##🗂️ Project Structure
+## 🗂️ Project Structure
 ```bash
 src/
  ├── public/          # images, icons
@@ -58,7 +58,7 @@ src/
  └── main.jsx
 ```
 
-🚀 Deployment
+## 🚀 Deployment
 
 This app is deployed on Netlify:
 
@@ -68,11 +68,11 @@ Publish directory: dist
 
 Add environment variables in Netlify dashboard.
 
-🖼️ Screenshots
+## 🖼️ Screenshots
 
 Add screenshots or GIFs here to showcase UI.
 
-🗺️ Roadmap
+## 🗺️ Roadmap
 
  Add movie details page
 
@@ -82,10 +82,10 @@ Add screenshots or GIFs here to showcase UI.
 
  Better error handling & loading states
 
-🤝 Contributing
+## 🤝 Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss.
 
-📜 License
+## 📜 License
 
 MIT License
