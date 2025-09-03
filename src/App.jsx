@@ -4,6 +4,7 @@ import Spinner from './components/Spinner';
 import MovieCard from './components/MovieCard';
 import { useDebounce } from 'react-use';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
+import MovieModal from './components/MovieModal';
 
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
@@ -35,8 +36,8 @@ const App = () => {
 
         try {
             const endpoint = query
-            ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-            : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+                ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+                : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
             const response = await fetch(endpoint, API_OPTIONS);
 
             if (!response.ok) {
@@ -52,7 +53,7 @@ const App = () => {
 
             setMovieList(data.results || []);
 
-            if(query && data.results.length > 0) {
+            if (query && data.results.length > 0) {
                 await updateSearchCount(query, data.results[0]);
             }
         } catch (error) {
@@ -71,6 +72,19 @@ const App = () => {
             console.error(`Error fetching trending movies: ${error}`);
         }
     }
+
+    const openMovie = async (movie) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/movie/${movie.id}?language=en-US`, API_OPTIONS);
+            if (!res.ok) throw new Error('Failed to fetch details');
+            const details = await res.json();
+            setSelectedMovie(details);
+        } catch (e) {
+            console.error(e);
+            // fallback: still show basic card data
+            setSelectedMovie(movie);
+        }
+    };
 
     useEffect(() => {
         fetchMovies(debounceSearhTerm);
@@ -105,7 +119,7 @@ const App = () => {
                 )}
                 <section className='all-movies'>
                     <h2 className='mt-[40px]'>All Movies</h2>
-                    
+
                     {isLoading ? (
                         <Spinner />
                     ) : errorMessage ? (
@@ -113,7 +127,7 @@ const App = () => {
                     ) : (
                         <ul>
                             {movieList.map((movie) => (
-                                <MovieCard key={movie.id} movie={movie} onClick={setSelectedMovie} />
+                                <MovieCard key={movie.id} movie={movie} onClick={openMovie} />
                             ))}
                         </ul>
                     )}
