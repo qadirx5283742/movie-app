@@ -25,6 +25,7 @@ const App = () => {
     const [trendingMovies, setTrendingMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [debounceSearhTerm, setDebounceSearhTerm] = useState('');
+    const [selectedMovie, setSelectedMovie] = useState(null);
 
     useDebounce(() => setDebounceSearhTerm(searchTerm), 500, [searchTerm])
 
@@ -112,12 +113,16 @@ const App = () => {
                     ) : (
                         <ul>
                             {movieList.map((movie) => (
-                                <MovieCard key={movie.id} movie={movie} />
+                                <MovieCard key={movie.id} movie={movie} onClick={setSelectedMovie} />
                             ))}
                         </ul>
                     )}
                 </section>
             </div>
+
+            {selectedMovie && (
+                <MovieModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
+            )}
         </main>
     )
 }
