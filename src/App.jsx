@@ -27,17 +27,22 @@ const App = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [debounceSearhTerm, setDebounceSearhTerm] = useState('');
     const [selectedMovie, setSelectedMovie] = useState(null);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
-    useDebounce(() => setDebounceSearhTerm(searchTerm), 500, [searchTerm])
+    useDebounce(() => {
+        setPage(1);
+        setDebounceSearhTerm(searchTerm);
+    }, 500, [searchTerm])
 
-    const fetchMovies = async (query = '') => {
+    const fetchMovies = async (query = '', pageNumber = 1) => {
         setIsLoading(true);
         setErrorMessage('');
 
         try {
             const endpoint = query
-                ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-                : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+                ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${pageNumber}`
+                : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&page=${pageNumber}`;
             const response = await fetch(endpoint, API_OPTIONS);
 
             if (!response.ok) {
@@ -52,8 +57,9 @@ const App = () => {
             }
 
             setMovieList(data.results || []);
+            setTotalPages(data.total_pages || 1);
 
-            if (query && data.results.length > 0) {
+            if (query && data.results.length > 0 && pageNumber === 1) {
                 await updateSearchCount(query, data.results[0]);
             }
         } catch (error) {
@@ -87,8 +93,8 @@ const App = () => {
     };
 
     useEffect(() => {
-        fetchMovies(debounceSearhTerm);
-    }, [debounceSearhTerm]);
+        fetchMovies(debounceSearhTerm, page);
+    }, [debounceSearhTerm, page]);
 
     useEffect(() => {
         loadTrendingMovies();
@@ -125,11 +131,36 @@ const App = () => {
                     ) : errorMessage ? (
                         <p className='text-white'>{errorMessage}</p>
                     ) : (
-                        <ul>
-                            {movieList.map((movie) => (
-                                <MovieCard key={movie.id} movie={movie} onClick={openMovie} />
-                            ))}
-                        </ul>
+                        <>
+                            <ul>
+                                {movieList.map((movie) => (
+                                    <MovieCard key={movie.id} movie={movie} onClick={openMovie} />
+                                ))}
+                            </ul>
+
+                            {/* Pagination */}
+                            {totalPages > 1 && (
+                                <div className="flex justify-center items-center gap-4 mt-8 text-white">
+                                    <button
+                                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                                        disabled={page === 1}
+                                        className="px-4 py-2 bg-[#1a1228] rounded-lg hover:bg-[#2a1f3d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    >
+                                        ←
+                                    </button>
+                                    <span className="text-sm font-medium">
+                                        {page} / {totalPages}
+                                    </span>
+                                    <button
+                                        onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                                        disabled={page === totalPages}
+                                        className="px-4 py-2 bg-[#1a1228] rounded-lg hover:bg-[#2a1f3d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    >
+                                        →
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </section>
             </div>

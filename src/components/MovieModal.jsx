@@ -1,111 +1,173 @@
 import React from "react";
-import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
 
 const MovieModal = ({ movie, onClose }) => {
-    if (!movie) return null;
+  if (!movie) return null;
+
+  const formatCurrency = (value) => {
+    if (!value) return 'N/A';
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  };
+
+  const formatRuntime = (minutes) => {
+    if (!minutes) return 'N/A';
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/70">
-  <div className="bg-[#1a1228] text-white max-w-5xl w-full rounded-2xl shadow-2xl overflow-hidden relative">
-    {/* Close button */}
-    <button
-      className="absolute top-4 right-4 text-white text-2xl hover:text-gray-300"
-      onClick={onClose}
-    >
-      ✖
-    </button>
-        {/* Header */}
-        <div className="flex justify-between items-center p-4">
-          <h1 className="text-2xl font-bold">Squid Game 2</h1>
-          <div className="flex items-center gap-2 bg-[#2a1f3d] px-3 py-1 rounded-full">
-            <span>8.9/10 (200K)</span>
+    <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/80 backdrop-blur-sm p-4" onClick={onClose}>
+      <div className="bg-[#0f0d23] text-white max-w-7xl w-full rounded-3xl shadow-2xl overflow-hidden max-h-[95vh] border border-gray-800 custom-scrollbar overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+
+        <div className="p-8 md:p-12 md:pt-6 space-y-4">
+          {/* Header Section */}
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-white text-start">{movie.title}</h1>
+                <div className="flex items-center gap-3 text-gray-400 text-sm md:text-base">
+                  <span>{movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</span>
+                  <span>•</span>
+                  <span>{movie.adult === 'true' ? 'PG-18+' : 'PG-13'}</span>
+                  <span>•</span>
+                  <span>{formatRuntime(movie.runtime)}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {/* Rating Badge */}
+                <div className="hidden md:flex items-center gap-2 bg-[#1a1625] border border-gray-800 px-4 py-2 rounded-lg">
+                  <img src="star.svg" alt="Star" className="w-5 h-5 text-yellow-500" />
+                  <span className="font-bold text-white">{movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}</span>
+                  <span className="text-gray-500">/10 ({movie.vote_count ? (movie.vote_count / 1000).toFixed(1) + 'K' : '0'})</span>
+                </div>
+
+                {/* Popularity Badge */}
+                <div className="hidden md:flex items-center gap-2 bg-[#1a1625] border border-gray-800 px-2 py-2 rounded-lg">
+                  <img src="popularity.svg" alt="Popularity" className="w-5 h-5 text-gray-500" />
+                  <span className="text-gray-500">{movie.popularity ? movie.popularity.toFixed(1) : 'N/A'}</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-          {/* Poster */}
-          <Card className="bg-transparent border-0 shadow-none">
-            <CardContent className="p-0">
+          {/* Media Section */}
+          <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-5">
+            {/* Poster */}
+            <div className="w-full">
               <img
                 src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : "/no-movie.png"}
-                alt="Squid Game Poster"
-                className="rounded-xl"
+                alt={movie.title}
+                className="w-full h-full rounded-xl shadow-lg object-cover aspect-[3/2]"
               />
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Trailer */}
-          <Card className="bg-transparent border-0 shadow-none relative">
-            <CardContent className="p-0 relative">
+            {/* Backdrop / Trailer Area */}
+            <div className="relative w-full h-full min-h-[300px] md:min-h-0">
               <img
-                src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : "/no-movie.png"}
-                alt="Trailer Thumbnail"
-                className="rounded-xl"
+                src={movie.backdrop_path ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}` : (movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : "/no-movie.png")}
+                alt="Backdrop"
+                className="w-full h-full object-cover rounded-xl shadow-lg brightness-75"
               />
               <div className="absolute inset-0 flex justify-center items-center">
-                <button className="bg-white text-black px-4 py-2 rounded-full font-bold">
-                  ▶ Trailer · 0:31
+                <button className="bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all text-white px-6 py-3 rounded-full font-medium flex items-center gap-3 group">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-black border-b-[5px] border-b-transparent ml-1"></div>
+                  </div>
+                  <span>Watch Trailer</span>
                 </button>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Details */}
-        <div className="p-6 space-y-4">
-          {/* Genres */}
-          <div className="flex gap-2">
-            <span className="bg-purple-700 px-3 py-1 rounded-lg">Adventure</span>
-            <span className="bg-blue-700 px-3 py-1 rounded-lg">Action</span>
-            <span className="bg-gray-700 px-3 py-1 rounded-lg">Drama</span>
+            </div>
           </div>
 
-          {/* Overview */}
-          <p className="text-gray-300">
-            Hundreds of cash-strapped players accept a strange invitation to compete
-            in children's games. Inside, a tempting prize awaits with deadly high
-            stakes: a survival game that has a whopping 45.6 billion-won prize at
-            stake.
-          </p>
-
-          {/* Info Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-300">
-            <p>
-              <strong>Release date:</strong> December 26, 2024 (Worldwide)
-            </p>
-            <p>
-              <strong>Countries:</strong> United States · Canada · UAE · Hungary · Italy ·
-              New Zealand
-            </p>
-            <p>
-              <strong>Status:</strong> Released
-            </p>
-            <p>
-              <strong>Language:</strong> English · Korean · Hindi · Arabic · German · Spanish
-            </p>
-            <p>
-              <strong>Budget:</strong> $21.4 million
-            </p>
-            <p>
-              <strong>Revenue:</strong> $900 Million
-            </p>
-            <p>
-              <strong>Tagline:</strong> 45.6 Billion Won is Child's Play
-            </p>
-            <p>
-              <strong>Production Companies:</strong> Legendary Entertainment · Warner Bros.
-              Entertainment · Villeneuve Films
-            </p>
+          {/* Action Bar */}
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center gap-16">
+              <div className="text-gray-400 text-sm">Generes </div>
+              <div className="flex flex-wrap gap-2 w-full md:w-auto">
+                {movie.genres && movie.genres.map((genre) => (
+                  <span key={genre.id} className="bg-[#1a1625] border border-gray-700 px-4 py-2 rounded-lg text-gray-300 text-sm font-medium">
+                    {genre.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+            {/* Homepage Button */}
+            {movie.homepage && (
+              <a href={movie.homepage} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto">
+                <button className="w-full bg-[#D6C7FF] hover:bg-[#bca4ff] text-[#1a1228] font-bold py-2 px-6 rounded-xl text-base flex items-center justify-center gap-2 transition-colors">
+                  Visit Homepage
+                  <span className="text-xl">→</span>
+                </button>
+              </a>
+            )}
           </div>
 
-          {/* Button */}
-          <Button className="bg-purple-600 hover:bg-purple-700 mt-4">
-            Visit Homepage →
-          </Button>
+          <div className="flex gap-16">
+            <div className="text-gray-400 text-sm">Overview </div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {movie.overview}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-10">
+            <div className="text-gray-400 text-sm">Release Date </div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {formatDate(movie.release_date)}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-15">
+            <div className="text-gray-400 text-sm">Countries </div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {movie.production_countries?.map(c => c.name).join(', ')}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-21">
+            <div className="text-gray-400 text-sm">Status </div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {movie.status || 'N/A'}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-16">
+            <div className="text-gray-400 text-sm">Language </div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {movie.spoken_languages?.map(l => l.english_name).join(', ') || movie.original_language}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-20">
+            <div className="text-gray-400 text-sm">Budget </div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {formatCurrency(movie.budget)}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-18">
+            <div className="text-gray-400 text-sm">Revenue </div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {formatCurrency(movie.revenue)}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-14">
+            <div className="text-gray-400 text-sm">Production<br />Companies</div>
+            <div className="flex flex-wrap gap-2 w-[60%] font-light text-sm/6">
+              {movie.production_companies?.map(c => c.name).join(', ') || 'N/A'}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default MovieModal;
