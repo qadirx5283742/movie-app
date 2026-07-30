@@ -59,7 +59,7 @@ Create a `.env` file in the project root with your API details:
 VITE_APPWRITE_COLLECTION_ID=your_collection_id
 VITE_APPWRITE_DATABASE_ID=your_database_id
 VITE_APPWRITE_PROJECT_ID=your_project_id
-TMDB_API_KEY=your_tmdb_bearer_token
+VITE_TMDB_API_KEY=your_tmdb_bearer_token
 ```
 
 ## 🗂️ Project Structure
@@ -85,7 +85,7 @@ Publish directory: `dist`
 
 Functions directory: `netlify/functions`
 
-Add `TMDB_API_KEY` and the Appwrite values in the Netlify environment variables.
+Add `VITE_TMDB_API_KEY` and the Appwrite values in the Netlify environment variables.
 
 The local `server.js` is still used for development and non-Netlify Node hosting.
 
