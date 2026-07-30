@@ -77,13 +77,17 @@ server.js             # local Express proxy for TMDB
 
 ## 🚀 Deployment
 
-This app can be deployed with a Node.js runtime:
+This app can be deployed on Netlify as a static site with serverless functions:
 
 Build command: `npm run build`
 
-Start command: `npm start`
+Publish directory: `dist`
 
-Make sure the deployment environment includes the same `.env` values used locally.
+Functions directory: `netlify/functions`
+
+Add `TMDB_API_KEY` and the Appwrite values in the Netlify environment variables.
+
+The local `server.js` is still used for development and non-Netlify Node hosting.
 
 ## 🖼️ Screenshots
 

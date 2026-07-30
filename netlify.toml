@@ -1,0 +1,15 @@
+[build]
+  publish = "dist"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/movies"
+  to = "/.netlify/functions/movies"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/movies/:id"
+  to = "/.netlify/functions/movie?id=:id"
+  status = 200
+  force = true
