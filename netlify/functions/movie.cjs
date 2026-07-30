@@ -1,5 +1,5 @@
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-const VITE_TMDB_API_KEY = process.env.VITE_TMDB_API_KEY;
+const TMDB_API_KEY = process.env.VITE_TMDB_API_KEY;
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -15,7 +15,7 @@ exports.handler = async (event) => {
     return json(405, { message: 'Method not allowed' });
   }
 
-  if (!VITE_TMDB_API_KEY) {
+  if (!TMDB_API_KEY) {
     return json(500, { message: 'TMDB_API_KEY is not configured on the server.' });
   }
 
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        Authorization: `Bearer ${VITE_TMDB_API_KEY}`,
+        Authorization: `Bearer ${TMDB_API_KEY}`,
       },
     });
 

@@ -7,6 +7,23 @@ import MovieModal from './components/MovieModal';
 
 
 const API_BASE_URL = '/api';
+const isProductionNetlify = import.meta.env.PROD;
+
+const getMoviesUrl = (query = '', pageNumber = 1) => {
+    const basePath = isProductionNetlify ? '/.netlify/functions' : API_BASE_URL;
+
+    return query
+        ? `${basePath}/movies?query=${encodeURIComponent(query)}&page=${pageNumber}`
+        : `${basePath}/movies?page=${pageNumber}`;
+};
+
+const getMovieDetailsUrl = (movieId) => {
+    if (isProductionNetlify) {
+        return `/.netlify/functions/movie?id=${movieId}&language=en-US`;
+    }
+
+    return `${API_BASE_URL}/movies/${movieId}?language=en-US`;
+};
 
 const App = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -33,9 +50,7 @@ const App = () => {
         setErrorMessage('');
 
         try {
-            const endpoint = query
-                ? `${API_BASE_URL}/movies?query=${encodeURIComponent(query)}&page=${pageNumber}`
-                : `${API_BASE_URL}/movies?page=${pageNumber}`;
+            const endpoint = getMoviesUrl(query, pageNumber);
             const response = await fetch(endpoint);
 
             if (!response.ok) {
@@ -74,7 +89,7 @@ const App = () => {
 
     const openMovie = async (movie) => {
         try {
-            const res = await fetch(`${API_BASE_URL}/movies/${movie.id}?language=en-US`);
+            const res = await fetch(getMovieDetailsUrl(movie.id));
             if (!res.ok) throw new Error('Failed to fetch details');
             const details = await res.json();
             setSelectedMovie(details);
