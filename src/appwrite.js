@@ -10,10 +10,26 @@ const client = new Client()
 
 const database = new Databases(client);
 
+const normalizeSearchTerm = (searchTerm) => {
+    if (typeof searchTerm !== 'string') return '';
+
+    return searchTerm
+        .trim()
+        .replace(/\s+/g, ' ')
+        .toLowerCase()
+        .slice(0, 80);
+}
+
 export const updateSearchCount = async (searchTerm, movie) => {
     try {
+        const normalizedSearchTerm = normalizeSearchTerm(searchTerm);
+
+        if (!normalizedSearchTerm || !movie?.id) {
+            return;
+        }
+
         const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
-            Query.equal('searchTerm', searchTerm),
+            Query.equal('searchTerm', normalizedSearchTerm),
         ])
 
         if(result.documents.length > 0) {
@@ -25,10 +41,10 @@ export const updateSearchCount = async (searchTerm, movie) => {
         }
         else {
             await database.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
-                searchTerm,
+                searchTerm: normalizedSearchTerm,
                 count: 1,
                 movie_id: movie.id,
-                poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                poster_url: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '/no-movie.png',
             })
         }
     } catch (error) {

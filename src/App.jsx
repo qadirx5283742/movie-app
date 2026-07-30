@@ -2,22 +2,11 @@ import { useState, useEffect } from 'react'
 import Search from './components/Search';
 import Spinner from './components/Spinner';
 import MovieCard from './components/MovieCard';
-import { useDebounce } from 'react-use';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
 import MovieModal from './components/MovieModal';
 
 
-const API_BASE_URL = 'https://api.themoviedb.org/3';
-
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-
-const API_OPTIONS = {
-    method: 'GET',
-    headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${API_KEY}`,
-    },
-};
+const API_BASE_URL = '/api';
 
 const App = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -30,10 +19,14 @@ const App = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    useDebounce(() => {
-        setPage(1);
-        setDebounceSearhTerm(searchTerm);
-    }, 500, [searchTerm])
+    useEffect(() => {
+        const debounceTimer = window.setTimeout(() => {
+            setPage(1);
+            setDebounceSearhTerm(searchTerm);
+        }, 500);
+
+        return () => window.clearTimeout(debounceTimer);
+    }, [searchTerm])
 
     const fetchMovies = async (query = '', pageNumber = 1) => {
         setIsLoading(true);
@@ -41,9 +34,9 @@ const App = () => {
 
         try {
             const endpoint = query
-                ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${pageNumber}`
-                : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&page=${pageNumber}`;
-            const response = await fetch(endpoint, API_OPTIONS);
+                ? `${API_BASE_URL}/movies?query=${encodeURIComponent(query)}&page=${pageNumber}`
+                : `${API_BASE_URL}/movies?page=${pageNumber}`;
+            const response = await fetch(endpoint);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch movies');
@@ -81,7 +74,7 @@ const App = () => {
 
     const openMovie = async (movie) => {
         try {
-            const res = await fetch(`${API_BASE_URL}/movie/${movie.id}?language=en-US`, API_OPTIONS);
+            const res = await fetch(`${API_BASE_URL}/movies/${movie.id}?language=en-US`);
             if (!res.ok) throw new Error('Failed to fetch details');
             const details = await res.json();
             setSelectedMovie(details);

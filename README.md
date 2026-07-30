@@ -1,20 +1,31 @@
 # 🎬 Movie Web (React + Vite)
 
-A simple movie discovery web app built with **React** and **Vite**, featuring real-time search and trending movie displays.
+A movie discovery web app built with **React** and **Vite**, featuring real-time search, trending movie displays, and a detailed movie modal.
 
 ## 🔗 Live Demo
 👉 [Movie Web](https://movie-web-react-js.netlify.app/)
 
 ## ✨ Features
-- 🔍 **Real-time Search** – Search for movies instantly as you type.  
-- 📊 **Trending & Popular Movies** – See a list of the most popular movies right now.  
-- 🖼️ **Responsive UI** – Works smoothly on mobile, tablet, and desktop.  
-- 🚫 **Note:** Clicking on a movie card does **not** open details yet — movies are currently displayed only.
+- 🔍 **Real-time Search** – Search for movies instantly as you type.
+- 📊 **Trending & Popular Movies** – See a list of the most popular movies right now.
+- 🖼️ **Responsive UI** – Works smoothly on mobile, tablet, and desktop.
+- 🎞️ **Movie Details Modal** – Click any movie card to open full details in a modal.
+- 🧭 **Homepage Access** – Open the movie's official homepage from inside the modal when available.
+- 🎨 **Polished Modal UX** – Custom modal scrollbar, body scroll lock, and mobile-friendly spacing.
+
+## 🛡️ Security & Stability
+- 🔐 **TMDB Proxy Server** – The TMDB API key is no longer called directly from the browser; requests go through a local `server.js` proxy.
+- 🚦 **API Rate Limiting** – The proxy limits repeated requests to reduce abuse.
+- ✅ **Safe External Links** – Homepage URLs are allowlisted to `http` and `https` only.
+- 🧼 **Normalized Trending Writes** – Search terms written to Appwrite are trimmed, normalized, and length-limited.
+- 🙈 **Secret Hygiene** – `.env` stays ignored by Git so local credentials are not committed.
 
 ## 🧰 Tech Stack
 - **Frontend:** React (with Vite)
 - **Styling:** Tailwind
+- **Backend:** Node.js + Express proxy for TMDB
 - **API:** Movie Database API TMDB
+- **Analytics/Data:** Appwrite
 
 ## 📦 Getting Started
 
@@ -43,30 +54,36 @@ npm run preview
 ```
 
 ## ⚙️ Environment Variables
-Create a .env file in the project root with your API details:
+Create a `.env` file in the project root with your API details:
 ```bash
-VITE_API_BASE_URL=https://api.themoviedb.org/3
-VITE_API_KEY=your_api_key_here
+VITE_APPWRITE_COLLECTION_ID=your_collection_id
+VITE_APPWRITE_DATABASE_ID=your_database_id
+VITE_APPWRITE_PROJECT_ID=your_project_id
+TMDB_API_KEY=your_tmdb_bearer_token
 ```
 
 ## 🗂️ Project Structure
 ```bash
 src/
- ├── public/          # images, icons
- ├── components/      # reusable components
- ├── App.jsx
- └── main.jsx
+ ├── assets/          # static assets
+ ├── components/      # reusable components and modal UI
+ ├── appwrite.js      # Appwrite search/trending helpers
+ ├── App.jsx          # main app shell and movie fetching
+ ├── index.css        # global theme and custom utilities
+ └── main.jsx         # React entry point
+
+server.js             # local Express proxy for TMDB
 ```
 
 ## 🚀 Deployment
 
-This app is deployed on Netlify:
+This app can be deployed with a Node.js runtime:
 
-Build command: npm run build
+Build command: `npm run build`
 
-Publish directory: dist
+Start command: `npm start`
 
-Add environment variables in Netlify dashboard.
+Make sure the deployment environment includes the same `.env` values used locally.
 
 ## 🖼️ Screenshots
 
