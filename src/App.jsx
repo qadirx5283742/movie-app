@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Search from './components/Search';
 import Spinner from './components/Spinner';
 import MovieCard from './components/MovieCard';
-import { getTrendingMovies, updateSearchCount } from './appwrite';
+import { getTrendingMovies, updateSearchCount } from './supabase';
 import MovieModal from './components/MovieModal';
 
 

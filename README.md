@@ -17,7 +17,7 @@ A movie discovery web app built with **React** and **Vite**, featuring real-time
 - 🔐 **TMDB Proxy Server** – The TMDB API key is no longer called directly from the browser; requests go through a local `server.js` proxy.
 - 🚦 **API Rate Limiting** – The proxy limits repeated requests to reduce abuse.
 - ✅ **Safe External Links** – Homepage URLs are allowlisted to `http` and `https` only.
-- 🧼 **Normalized Trending Writes** – Search terms written to Appwrite are trimmed, normalized, and length-limited.
+- 🧼 **Normalized Trending Writes** – Search terms written to Supabase are trimmed, normalized, and length-limited.
 - 🙈 **Secret Hygiene** – `.env` stays ignored by Git so local credentials are not committed.
 
 ## 🧰 Tech Stack
@@ -25,7 +25,7 @@ A movie discovery web app built with **React** and **Vite**, featuring real-time
 - **Styling:** Tailwind
 - **Backend:** Node.js + Express proxy for TMDB
 - **API:** Movie Database API TMDB
-- **Analytics/Data:** Appwrite
+- **Analytics/Data:** Supabase (PostgreSQL)
 
 ## 📦 Getting Started
 
@@ -56,9 +56,9 @@ npm run preview
 ## ⚙️ Environment Variables
 Create a `.env` file in the project root with your API details:
 ```bash
-VITE_APPWRITE_COLLECTION_ID=your_collection_id
-VITE_APPWRITE_DATABASE_ID=your_database_id
-VITE_APPWRITE_PROJECT_ID=your_project_id
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_SUPABASE_TABLE=movie_search_metrics
 VITE_TMDB_API_KEY=your_tmdb_bearer_token
 ```
 
@@ -67,7 +67,7 @@ VITE_TMDB_API_KEY=your_tmdb_bearer_token
 src/
  ├── assets/          # static assets
  ├── components/      # reusable components and modal UI
- ├── appwrite.js      # Appwrite search/trending helpers
+ ├── supabase.js      # Supabase search/trending helpers
  ├── App.jsx          # main app shell and movie fetching
  ├── index.css        # global theme and custom utilities
  └── main.jsx         # React entry point
@@ -85,7 +85,7 @@ Publish directory: `dist`
 
 Functions directory: `netlify/functions`
 
-Add `VITE_TMDB_API_KEY` and the Appwrite values in the Netlify environment variables.
+Add `VITE_TMDB_API_KEY` and the Supabase values in the Netlify environment variables.
 
 The local `server.js` is still used for development and non-Netlify Node hosting.
 
