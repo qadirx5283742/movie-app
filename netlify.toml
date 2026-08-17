@@ -13,3 +13,15 @@
   to = "/.netlify/functions/movie?id=:id"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/api/trending"
+  to = "/.netlify/functions/trending"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/search-metrics"
+  to = "/.netlify/functions/search-metrics"
+  status = 200
+  force = true
